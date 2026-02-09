@@ -58,3 +58,57 @@ curl -X POST http://localhost:3000/users/register \
     "email":"suyash@example.com",
     "password":"securePassword123"
   }'
+
+
+# Users — POST /users/login
+
+## Description
+Authenticates an existing user. Validates input, verifies the provided password against the stored hash, and returns an auth token and the user on success.
+
+- Method: POST
+- URL: /users/login
+- Content-Type: application/json
+
+## Request body (JSON)
+Required fields:
+- `email` (string) — must be a valid email address
+- `password` (string) — minimum 6 characters
+
+Example:
+{
+  "email": "suyash@example.com",
+  "password": "securePassword123"
+}
+
+## Validation rules (implemented)
+- `email` — must be a valid email
+- `password` — at least 6 characters
+
+If validation fails, the endpoint responds with `400 Bad Request` and the validation errors array.
+
+## Responses / Status Codes
+- 200 OK — Login successful. Response body:
+{
+  "token": "<jwt-token>",
+  "user": {
+    "_id": "...",
+    "fullname": {
+      "firstname": "Suyash",
+      "lastname": "Pandey"
+    },
+    "email": "suyash@example.com"
+  }
+}
+- 400 Bad Request — Validation failed:
+{ "errors": [ /* validation error objects */ ] }
+- 401 Unauthorized — Invalid email or password:
+{ "message": "Invalid email or password" }
+- 500 Internal Server Error — Unexpected server error.
+
+## Example curl
+curl -X POST http://localhost:3000/users/login \
+  -H "Content-Type: application/json" \
+  -d '{
+    "email":"suyash@example.com",
+    "password":"securePassword123"
+  }'
