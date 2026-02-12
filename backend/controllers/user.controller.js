@@ -1,6 +1,7 @@
 const userModel = require('../models/user.model');
 const userService = require("../services/user.service")
 const {validationResult} = require("express-validator")
+const blacklistTokenModel = require("../models/blacklistToken.model")
 
 module.exports.registerUser = async(req,res,next)=>{
      const errors = validationResult(req);
@@ -53,5 +54,31 @@ module.exports.loginUser = async(req,res,next)=>{
    }
 
    const token = await user.generateAuthToken()
+   res.cookie("token",token)
    res.status(200).json({token,user})
+}
+
+module.exports.getUserProfile = async(req,res,next)=>{
+
+         res.status(200).json(req.user); 
+
+}
+
+module.exports.logoutUser = async(req,res,next)=>{
+   // Prefer token from cookie or Authorization header (lowercase)
+   const token = req.cookies?.token || req.headers?.authorization?.split(' ')[1] || null
+
+   if (!token) {
+      return res.status(400).json({ message: "Token not provided" });
+   }
+
+   try {
+      await blacklistTokenModel.create({token});
+   } catch (err) {
+      // ignore duplicate blacklist entries
+      if (err.code !== 11000) return res.status(500).json({ message: 'Failed to blacklist token' })
+   }
+
+   res.clearCookie("token")
+   res.status(200).json({"message":"Logged Out Successfully"})
 }
