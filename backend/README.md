@@ -149,3 +149,64 @@ curl -i -H "Authorization: Bearer <token>" -X GET http://localhost:3000/users/lo
 - Blacklist entries expire automatically (24h by default) via the model's TTL index.
 - Ensure the client sends the same token for logout that was received at login (cookie or header).
 - Method: GET
+
+## Captains — POST /captains/register
+
+### Description
+Registers a new captain (driver). Validates input, hashes the password, creates a captain record, and returns an auth token and the created captain on success.
+
+- Method: POST
+- URL: /captains/register
+- Content-Type: application/json
+- Authentication: None
+
+### Request body (JSON)
+Required fields:
+- `fullname.firstname` (string) — minimum 3 characters
+- `email` (string) — valid email
+- `password` (string) — minimum 6 characters
+- `vehicle.color` (string) — minimum 3 characters
+- `vehicle.plate` (string) — minimum 8 characters
+- `vehicle.capacity` (integer) — minimum 1
+- `vehicle.vehicleType` (string) — one of `auto`, `car`, `motocycle`
+
+Optional:
+- `fullname.lastname`
+- `location.latitude`, `location.logitude`
+
+Example request body:
+```json
+{
+  "fullname": { "firstname": "Ravi", "lastname": "Kumar" },
+  "email": "ravi@example.com",
+  "password": "securePassword123",
+  "vehicle": { "color": "Blue", "plate": "ABCD1234", "capacity": 4, "vehicleType": "car" }
+}
+```
+
+### Validation rules
+- `fullname.firstname` — at least 3 characters
+- `email` — must be a valid email
+- `password` — at least 6 characters
+- `vehicle.color` — at least 3 characters
+- `vehicle.plate` — at least 8 characters
+- `vehicle.capacity` — integer >= 1
+- `vehicle.vehicleType` — one of `auto`, `car`, `motocycle`
+
+### Responses
+- 200 OK — Registration successful. Response body:
+```json
+{ "token": "<jwt-token>", "captain": { "_id": "...", "fullname": { "firstname": "Ravi", "lastname": "Kumar" }, "email": "ravi@example.com", "vehicle": { "color": "Blue", "plate": "ABCD1234", "capacity": 4, "vehicleType": "car" } } }
+```
+- 400 Bad Request — Validation failed: `{ "errors": [ ... ] }`
+- 500 Internal Server Error — Unexpected server error.
+
+### Example curl
+```bash
+curl -X POST http://localhost:3000/captains/register \
+  -H "Content-Type: application/json" \
+  -d '{"fullname":{"firstname":"Ravi","lastname":"Kumar"},"email":"ravi@example.com","password":"securePassword123","vehicle":{"color":"Blue","plate":"ABCD1234","capacity":4,"vehicleType":"car"}}'
+```
+
+### Notes
+- The service requires all vehicle fields and basic captain details; missing required fields will fail creation.
