@@ -2,7 +2,7 @@ const captainModel = require("../models/captain.model")
 const userModel = require("../models/user.model")
 const captainServices = require("../services/captain.service")
 const {validationResult, ExpressValidator, header} = require('express-validator')
-
+const blacklistTokenModel = require("../models/blacklistToken.model")
  
 module.exports.registerCaptain = async (req,res,next)=>{
 
@@ -68,7 +68,19 @@ module.exports.getCaptainProfile = async(req,res)=>{
 }
 
 module.exports.logoutCaptain = async(req,res) =>{
-   
+    const token = req.cookies.token || req.headers.Autharization?.split()[1]
+    console.log(token);
     
+    if(!token){
+        res.status(401).json({message:"token not provided"})
+    }
 
+    try {
+        await blacklistTokenModel.create({token})
+    } catch (error) {
+        if (err.code !== 11000) return res.status(500).json({ message: 'Failed to blacklist token' })
+    }
+    
+    res.clearCookie("token")
+    res.status(200).json({message:"Logged out successfully"})
 }
