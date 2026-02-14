@@ -16,4 +16,10 @@ router.post('/register',[
 
 ],captainController.registerCaptain)
 
+
+router.post('/login',[
+    body('email').isEmail().withMessage("Invalid email"),
+    body('password').isLength({min:6}).withMessage("Password must be 6 letters log")
+],captainController.loginCaptain)
+
 module.exports = router // app.use this in app.js
