@@ -1,7 +1,8 @@
 const captainModel = require("../models/captain.model")
 const userModel = require("../models/user.model")
 const captainServices = require("../services/captain.service")
-const {validationResult, ExpressValidator} = require('express-validator')
+const {validationResult, ExpressValidator, header} = require('express-validator')
+
  
 module.exports.registerCaptain = async (req,res,next)=>{
 
@@ -60,4 +61,14 @@ module.exports.loginCaptain = async (req,res,next) => {
     const token = captain.generateAuthToken()
     res.cookie("token",token)
     res.status(200).json({message:"Captain logged in", token,captain})
+}
+
+module.exports.getCaptainProfile = async(req,res)=>{
+    res.status(200).json(req.captain)
+}
+
+module.exports.logoutCaptain = async(req,res) =>{
+   
+    
+
 }
