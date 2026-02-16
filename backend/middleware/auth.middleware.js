@@ -52,9 +52,10 @@ module.exports.captainAuth = async (req,res,next)=>{
             res.status(401).json({message:"Unautharized"})
         }
         req.captain = captain
+        next()
 
     } catch (error) {
         res.status(401).json({message:"Unautharized"})
     }
-    next()
+    
 }

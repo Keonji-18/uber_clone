@@ -1,4 +1,4 @@
-## Users — POST /users/register
+d## Users — POST /users/register
 
 ### Description
 Registers a new user: validates input, hashes the password, creates a user record, and returns an auth token and the created user on success.
@@ -210,3 +210,5 @@ curl -X POST http://localhost:3000/captains/register \
 
 ### Notes
 - The service requires all vehicle fields and basic captain details; missing required fields will fail creation.
+
+# Have to add reaminig endpoints docs later
