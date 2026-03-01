@@ -28,7 +28,7 @@ const CaptainSignup = () => {
 
         setCaptainData({
 
-            userName: {
+            fullName: {
                 firstName: firstName,
                 lastName: lastName
             },
@@ -179,7 +179,7 @@ const CaptainSignup = () => {
                         </div>
                     </div>
                     <button className="bg-black rounded  font-semibold px-4 py-2  text-white w-full text-lg mt-2 mb-3.5" >Sign-up Captain</button>
-                    <p className="text-center">Already have an account? <Link to="/login-captain" className="text-blue-400 ">Captain login</Link></p>
+                    <p className="text-center">Already have an account? <Link to="/captain-login" className="text-blue-400 ">Captain login</Link></p>
                 </form>
 
             </div>
