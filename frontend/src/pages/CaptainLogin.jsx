@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, } from "react-router-dom";
 
 const CaptainLogin = () => {
     
@@ -17,7 +17,7 @@ const CaptainLogin = () => {
             password:password
         
         })
-        console.log(captaindData);
+
         
     }
     return (

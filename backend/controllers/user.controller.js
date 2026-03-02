@@ -65,7 +65,7 @@ module.exports.getUserProfile = async(req,res,next)=>{
 
 module.exports.logoutUser = async(req,res,next)=>{
    // Prefer token from cookie or Authorization header (lowercase)
-   const token = req.cookies?.token || req.headers?.authorization?.split(' ')[1] || null
+   const token =  req.headers.Authorization.split(' ')[1]  || req.cookies?.token 
 
    if (!token) {
       return res.status(400).json({ message: "Token not provided" });
