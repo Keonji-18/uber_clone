@@ -29,7 +29,7 @@ const UserLogin = () => {
             const data = response.data
             setUser(data.user)
             localStorage.setItem(`token`,JSON.stringify(data.token))
-            navigate("/Home")
+            navigate("/home")
         }
         setEmail('')
         setPassword('')

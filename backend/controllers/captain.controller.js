@@ -36,7 +36,7 @@ module.exports.registerCaptain = async (req,res,next)=>{
 }
 
 module.exports.loginCaptain = async (req,res,next) => {
-    console.log("hello login captain");
+    
     
     const errors = validationResult(req)
     if(!errors.isEmpty()){
@@ -69,7 +69,7 @@ module.exports.getCaptainProfile = async(req,res)=>{
 
 module.exports.logoutCaptain = async(req,res) =>{
     const token = req.cookies.token || req.headers.Autharization?.split()[1]
-    console.log(token);
+
     
     if(!token){
         res.status(401).json({message:"token not provided"})

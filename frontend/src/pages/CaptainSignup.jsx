@@ -1,36 +1,38 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useContext, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+import {CaptainDataContext} from "../context/captainContext"
+
+
 
 const CaptainSignup = () => {
 
-    const [firstName, setFirstName] = useState('')
-    const [lastName, setLastName] = useState('')
+    const [firstname, setFirstname] = useState('')
+    const [lastname, setLastname] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [color, setColor] = useState('')
     const [plate, setPlate] = useState('')
     const [capacity, setCapacity] = useState('')
-    const [type, setType] = useState('')
+    const [vehicleType, setVehicleType] = useState('')
 
     const [captainData, setCaptainData] = useState('')
 
-    function submitHandler(e) {
+    const navigate = useNavigate()
+    
+    
+ const captainContext = useContext(CaptainDataContext);
+ const { captain, setCaptain } = captainContext || {};
+
+ 
+    const  submitHandler = async (e)=> {
         e.preventDefault()
 
-        setFirstName('')
-        setLastName('')
-        setEmail('')
-        setPassword('')
-        setColor('')
-        setPlate('')
-        setCapacity('')
-        setType('')
+        const newCaptain = {
 
-        setCaptainData({
-
-            fullName: {
-                firstName: firstName,
-                lastName: lastName
+            fullname: {
+                firstname: firstname,
+                lastname: lastname
             },
             email: email,
             password: password,
@@ -38,10 +40,27 @@ const CaptainSignup = () => {
                 color: color,
                 plate: plate,
                 capacity: capacity,
-                type: type
+                vehicleType: vehicleType
             }
-        })
+        }
 
+
+        const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/captains/register`,newCaptain)
+
+        if (response.status === 200 ||response.status===201){
+            const data = response.data
+            setCaptain(data.captain)
+            navigate('/captain-home')
+        }
+
+        setFirstname('')
+        setLastname('')
+        setEmail('')
+        setPassword('')
+        setColor('')
+        setPlate('')
+        setCapacity('')
+        setVehicleType('')
 
     }
 
@@ -52,8 +71,6 @@ const CaptainSignup = () => {
 
                 <form onSubmit={(e) => {
                     submitHandler(e)
-
-                    console.log(captainData);
                     
 
                 }}>
@@ -64,9 +81,9 @@ const CaptainSignup = () => {
                             type="text"
                             placeholder="first name"
                             className=" bg-[#eeee]  rounded px-4 py-3  w-full text-base placeholder:text-sm"
-                            value={firstName}
+                            value={firstname}
                             onChange={(e) => {
-                                setFirstName(e.target.value)
+                                setFirstname(e.target.value)
                             }}
                         />
                         <input
@@ -74,9 +91,9 @@ const CaptainSignup = () => {
                             type="text"
                             placeholder="last name"
                             className=" bg-[#eeee] rounded px-4 py-3  w-full text-base placeholder:text-sm"
-                            value={lastName}
+                            value={lastname}
                             onChange={(e) => {
-                                setLastName(e.target.value)
+                                setLastname(e.target.value)
                             }}
                         />
                     </div>
@@ -141,7 +158,7 @@ const CaptainSignup = () => {
                             setCapacity(e.target.value)
                         }} />
 
-                    <h3 className="text-lg font-medium mb-2">Vehicle Type</h3>
+                    <h3 className="text-lg font-medium mb-2">Vehicle type</h3>
                     <div className="mb-4 flex justify-between gap-2">
                         <div>
                         <input
@@ -149,8 +166,8 @@ const CaptainSignup = () => {
                             type="radio"
                             id="motorcycle"
                             value={"motorcycle"}
-                            checked={type === "motorcycle"}
-                            onChange={e => setType(e.target.value)}
+                            checked={vehicleType === "motorcycle"}
+                            onChange={e => setVehicleType(e.target.value)}
                              />
                         <label htmlFor="motorcycle"> Motorcycle</label>
                         </div>
@@ -160,8 +177,8 @@ const CaptainSignup = () => {
                             type="radio"
                             id="auto"
                             value={"auto"}
-                            checked={type === "auto"}
-                            onChange={e => setType(e.target.value)}
+                            checked={vehicleType === "auto"}
+                            onChange={e => setVehicleType(e.target.value)}
                         />
                         <label htmlFor="auto"> Auto</label>
                         </div>
@@ -172,13 +189,13 @@ const CaptainSignup = () => {
                             type="radio"
                             id="car"
                             value={"car"}
-                            checked={type === "car"}
-                            onChange={e => setType(e.target.value)}
+                            checked={vehicleType === "car"}
+                            onChange={e => setVehicleType(e.target.value)}
                         />
                         <label htmlFor="car"> Car</label>
                         </div>
                     </div>
-                    <button className="bg-black rounded  font-semibold px-4 py-2  text-white w-full text-lg mt-2 mb-3.5" >Sign-up Captain</button>
+                    <button className="bg-black rounded  font-semibold px-4 py-2  text-white w-full text-lg mt-2 mb-3.5" >Create Captain</button>
                     <p className="text-center">Already have an account? <Link to="/captain-login" className="text-blue-400 ">Captain login</Link></p>
                 </form>
 

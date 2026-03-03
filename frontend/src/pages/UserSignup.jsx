@@ -12,13 +12,16 @@ const UserSignup = () => {
 
     const navigate = useNavigate()
 
+
     const {user, setUser} = useContext(UserDataContext)
+
+    
     const submitHandler = async (e) => {
         e.preventDefault()
 
         const newUser = {
             fullname: {
-                 firstname: firstName,
+                firstname: firstName,
                 lastname : lastName },
             email: email,
             password: password,
@@ -29,7 +32,7 @@ const UserSignup = () => {
         if(response.status === 200 || response.status === 201){
             const data = response.data
             setUser(data.user)
-            navigate("/Home")
+            navigate("/home")
         }
 
         setFirstName('')
