@@ -68,7 +68,7 @@ module.exports.getCaptainProfile = async(req,res)=>{
 }
 
 module.exports.logoutCaptain = async(req,res) =>{
-    const token = req.cookies.token || req.headers.Autharization?.split()[1]
+    const token = req.cookies.token || req.headers.Autharization?.split(" ")[1]
 
     
     if(!token){
