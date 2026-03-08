@@ -50,7 +50,7 @@ const Home = () => {
                     </h4>
                     <h4 className="text-3xl font-semibold">Find a trip</h4>
                     <form onSubmit={(e)=>{submitHandler(e)}}>
-                        <div className="line absolute h-14 left-10 w-1 top-[43%] bg-gray-600 rounded-full"></div>
+                        <div className="line absolute h-14 left-10 w-1 top-[46%] bg-gray-600 rounded-full"></div>
                         <input
                             onClick={()=>setShowpanel(true)}
                             type="text"
