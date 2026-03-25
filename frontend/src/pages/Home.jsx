@@ -3,6 +3,11 @@ import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import 'remixicon/fonts/remixicon.css'
 import LocationSearchPanel from "../components/LocationSearchPanel";
+import VehiclePanel from "../components/VehiclePanel"
+import ConfirmedRidePanel from "../components/ConfirmedRidePanel"
+import WaitForDriver from "../components/WaitForDriver";
+import DriverAssigned from "../components/DriverAssigned";
+
 
 const Home = () => {
 
@@ -10,11 +15,23 @@ const Home = () => {
     const [destination, setDestination] = useState('')
     const [showPanel, setShowpanel] = useState(false)
     const [vehicelPanel, setVehiclePanel] = useState(false)
+    const [confirmRidePanel, setConfirmRidePanel] = useState(false)
+    const [waitForRidePanel, setWaitForRidePanel] = useState(false)
+    const [driverAssigned, setDriverAssigned] = useState(false)
+
+
 
     const panelRef = useRef(null)
     const panelCloseRef = useRef(null)
     const vehicelPanelRef = useRef(null)
     const vehicelPanelCloseRef = useRef(null)
+    const confirmRidePanelRef = useRef(null)
+    const confirmRidePanelCloseRef = useRef(null)
+    const waitForRidePanelRef = useRef(null)
+    const waitForRidePanelCloseRef = useRef(null)
+    const driverAssignedRef = useRef(null)
+    const driverAssignedCloseRef = useRef(null)
+
 
     const submitHandler = (e) => {
         e.preventDefault()
@@ -59,6 +76,67 @@ const Home = () => {
        }
     },[vehicelPanel])
 
+    useGSAP(function() {
+       if (confirmRidePanel){
+         gsap.to(confirmRidePanelRef.current, {
+            transform: 'translateY(0)'
+        })
+        gsap.to(confirmRidePanelCloseRef.current, {
+                opacity: 1
+            })
+        
+       }
+       else{
+         gsap.to(confirmRidePanelRef.current, {
+            transform: 'translateY(100%)'
+        })
+        gsap.to(confirmRidePanelCloseRef.current, {
+                opacity: 0
+            })
+       }
+    },[confirmRidePanel])
+
+    useGSAP(function() {
+       if (waitForRidePanel){
+         gsap.to(waitForRidePanelRef.current, {
+            transform: 'translateY(0)'
+        })
+        gsap.to(waitForRidePanelCloseRef.current, {
+                opacity: 1
+            })
+        
+       }
+       else{
+         gsap.to(waitForRidePanelRef.current, {
+            transform: 'translateY(100%)'
+        })
+        gsap.to(waitForRidePanelCloseRef.current, {
+                opacity: 0
+            })
+       }
+    },[waitForRidePanel])
+
+    useGSAP(function() {
+       if (driverAssigned){
+         gsap.to(driverAssignedRef.current, {
+            transform: 'translateY(0)'
+        })
+        gsap.to(driverAssignedCloseRef.current, {
+                opacity: 1
+            })
+        
+       }
+       else{
+         gsap.to(driverAssignedRef.current, {
+            transform: 'translateY(100%)'
+        })
+        gsap.to(driverAssignedCloseRef.current, {
+                opacity: 0
+            })
+       }
+    },[driverAssigned])
+
+
 
     return (
         <div className="h-screen relative overflow-hidden">
@@ -100,37 +178,16 @@ const Home = () => {
                 </div>
             </div>
             <div ref={vehicelPanelRef} className="fixed w-full z-10 bottom-0 translate-y-full bg-white px-3 py-6">
-               <h4 ref={vehicelPanelCloseRef} onClick={() => setVehiclePanel(false)} className="p-1 text-center w-[93%] absolute top-0 ">
-                        <i className="text-3xl text-gray-200 ri-arrow-down-wide-line "></i>
-                    </h4>
-                <h3 className="text-2xl mb-4 font-semibold">Choose a Vehicel</h3>
-                <div className=" w-full   p-3 mb-2   flex items-center justify-between active:border-2  rounded-2xl">
-                    <img  className="h-10 " src="https://cn-geo1.uber.com/image-proc/crop/resizecrop/udam/format=auto/width=956/height=538/srcb64=aHR0cHM6Ly90Yi1zdGF0aWMudWJlci5jb20vcHJvZC91ZGFtLWFzc2V0cy8yOWZiYjhiMC03NWIxLTRlMmEtODUzMy0zYTM2NGU3MDQyZmEucG5n" alt="" />
-                    <div className=" w-1/2">
-                        <h4 className="font-medium text-lg">Uber Go  <span className=""><i className="ri-user-fill"></i>4</span></h4>
-                        <h5 className="font-medium text-sm">5 mins away</h5>
-                        <p className="font-medium text-xs text-gray-600">Afforadable, compact ride</p>
-                    </div>
-                    <h2 className="text-lg font-semibold">₹193.20</h2>
-                </div>
-                <div className=" w-full   px-3 py-3 pl-6 mb-2  flex items-center justify-between active:border-2  rounded-2xl">
-                    <img  className="h-10 mr-2" src="https://cn-geo1.uber.com/image-proc/crop/resizecrop/udam/format=auto/width=552/height=552/srcb64=aHR0cHM6Ly90Yi1zdGF0aWMudWJlci5jb20vcHJvZC91ZGFtLWFzc2V0cy85NTM4NTEyZC1mZGUxLTRmNzMtYmQ1MS05Y2VmZjRlMjU0ZjEucG5n" alt="" />
-                    <div className=" w-1/2 ">
-                        <h4 className="font-medium text-lg">Moto  <span className=""><i className="ri-user-fill"></i>1</span></h4>
-                        <h5 className="font-medium text-sm">3 mins away</h5>
-                        <p className="font-medium text-xs text-gray-600">Afforadable, Motorcycle ride</p>
-                    </div>
-                    <h2 className="text-lg font-semibold">₹85.10</h2>
-                </div>
-                <div className=" w-full   p-3 mb-2   flex items-center justify-between border-black active:border-2  rounded-2xl">
-                    <img  className="h-10 mr-3" src="https://clipart-library.com/2023/Uber_Auto_312x208_pixels_Mobile.png" alt="" />
-                    <div className=" w-1/2 ">
-                        <h4 className="font-medium text-lg">UberAuto  <span className=""><i className="ri-user-fill"></i>3</span></h4>
-                        <h5 className="font-medium text-sm">2 mins away</h5>
-                        <p className="font-medium text-xs text-gray-600">Afforadable, Auto ride</p>
-                    </div>
-                    <h2 className="text-lg font-semibold">₹130.10</h2>
-                </div>
+               <VehiclePanel setConfirmRidePanel={setConfirmRidePanel} setVehiclePanel={setVehiclePanel} vehicelPanelCloseRef={vehicelPanelCloseRef}/>
+            </div>
+            <div ref={confirmRidePanelRef} className="fixed w-full z-10 bottom-0 translate-y-full bg-white px-3 py-6">
+               <ConfirmedRidePanel setConfirmRidePanel={setConfirmRidePanel} confirmRidePanelCloseRef={confirmRidePanelCloseRef} setWaitForRidePanel={setWaitForRidePanel} />
+            </div>
+             <div ref={waitForRidePanelRef} className="fixed w-full z-10 bottom-0 translate-y-full bg-white px-3 py-6">
+               <WaitForDriver setWaitForRidePanel={setWaitForRidePanel} waitForRidePanelCloseRef={waitForRidePanelCloseRef}/>
+            </div>
+            <div  ref={waitForRidePanelRef} className="fixed w-full z-10 bottom-0  bg-white px-3 py-6">
+               <DriverAssigned setDriverAssigned={setDriverAssigned} waitForRidePanelCloseRef={waitForRidePanelCloseRef}/>
             </div>
 
         </div>
